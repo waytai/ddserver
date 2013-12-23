@@ -23,7 +23,7 @@
             <p class="j">
               Use the from to specify your hostnames. You can add up to 
               {{config.dns.max_hosts}} hostnames with a maximum length of 
-              255 characters each. Only alphanumeric characters are allowed.
+              63 characters each. Only alphanumeric characters are allowed.
             </p>
             
             {% if suffixes|count > 1 %}
@@ -45,6 +45,11 @@
               be available. If you leave the IP address field blank, you have to
               update it using your homerouter or the ddclient program, before it
               will respond to DNS queries.
+            </p>
+            <p>
+              After adding a new hostname, you can modify it or display configuration
+              examples by navigating to the <i>Your hostnames</i> tab and click the
+              details button.
             </p>
           </div>
         
