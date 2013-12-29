@@ -135,7 +135,11 @@ def post_hosts_add(user,
       WHERE `user_id` = %(user_id)s
     ''', {'user_id': user.id})
 
-    if (not user.admin) or (cur.rowcount >= config.dns.max_hosts):
+    # users can have an individual hostname limit, unlimited hostnames (-1)
+    # or have no limit set in the db to use the default from the config
+    if ((user.maxhosts is None and cur.rowcount >= int(config.dns.max_hosts)) or
+        (user.maxhosts is not None and
+         (int(cur.rowcount >= user.maxhosts) and int(user.maxhosts) is not -1))):
       messages.error('Maximum number of hosts reached')
       bottle.redirect('/user/hosts')
 

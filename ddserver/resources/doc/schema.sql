@@ -33,6 +33,7 @@ CREATE TABLE `users` (
   `active`      BOOLEAN        NOT NULL DEFAULT FALSE,
   `created`     TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `authcode`    VARCHAR(36)    NULL,
+  `maxhosts`    INT            NULL DEFAULT NULL
   
   INDEX (`username`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
@@ -94,7 +95,8 @@ INSERT INTO `users` (
   `password`,
   `email`,
   `admin`,
-  `active`
+  `active`,
+  `maxhosts`
 ) VALUES (
   1,
   'admin',

@@ -213,3 +213,33 @@ def post_user_rmadmin(user,
 
   bottle.redirect('/admin/users/admin')
 
+
+
+@route('/admin/users/updateMaxhosts', method = 'POST')
+@authorized_admin()
+@validate('/admin/users/all',
+          max_hosts = validation.Int(not_empty = True),
+          user_id = validation.Int(not_empty = True))
+@require(db = 'ddserver.db:Database',
+         messages = 'ddserver.interface.message:MessageManager')
+def post_user_updatemaxhosts(user,
+                             data,
+                             db,
+                             messages):
+  ''' Update the maximum allowed hostnames of a user . '''
+
+  if data.max_hosts == -2:
+    data.max_hosts = None
+
+  with db.cursor() as cur:
+    cur.execute('''
+        UPDATE `users`
+        SET `maxhosts` = %(max_hosts)s
+        WHERE `id` = %(user_id)s
+    ''', {'max_hosts': data.max_hosts,
+          'user_id': data.user_id})
+
+  messages.success('Ok, done.')
+
+  bottle.redirect('/admin/users/all')
+

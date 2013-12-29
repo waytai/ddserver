@@ -22,6 +22,7 @@
             <th>Username</th>
             <th>Email</th>
             <th width="160px">Created</th>
+            <th width="140px">Max Hostnames</th>
             <th width="120px" colspan="2">Actions</th>
           </tr>
           {% for user in users %}
@@ -29,6 +30,42 @@
               <td>{{user.username}}</td>
               <td>{{user.email}}</td>
               <td>{{user.created}}</td>
+              <td>
+                <span id="userHostDisplay">
+                  {% if user.maxhosts == -1 %}
+                    <i>unlimited</i>
+                  {% else %}
+                    {% if user.maxhosts == None %}<i>default ({{config.dns.max_hosts}})</i>{% else %}{{user.maxhosts}}{% endif %}
+                  {% endif %}
+                  <span class="pull-right">
+                    <i class="icon-edit" id="userHostEditButton"></i>
+                    <i class="icon-refresh" id="userHostResetButton"></i>
+                  </span>
+                </span>
+
+                <span id="userHostEdit" style="display: none">
+                  <form class="form-horizontal" action="/admin/users/updateMaxhosts" method="post">
+                    <input type="hidden" name="user_id" value="{{user.id}}">
+                    <input type="text" name="max_hosts" class="input-mini" style="margin: 0" value="{% if user.maxhosts != -1 %}{% if user.maxhosts == None %}{{config.dns.max_hosts}}{% else %}{{user.maxhosts}}{% endif %}{% endif %}">
+                    <button class="btn pull-right" type="submit"><i class="icon-ok" id="userHostEditButton"></i></button>
+                  </form>
+                </span>
+
+                <form class="form-horizontal" action="/admin/users/updateMaxhosts" id="userHostResetForm" method="post">
+                  <input type="hidden" name="user_id" value="{{user.id}}">
+                  <input type="hidden" name="max_hosts" value="-2">
+                </form>
+
+                <script type="text/javascript">
+                    $('#userHostResetButton').click(function() {
+                      $('#userHostResetForm').submit();
+                    });
+                    $('#userHostEditButton').click(function() {
+                      $('#userHostDisplay').hide();
+                      $('#userHostEdit').show();
+                    });
+                </script>
+              </td>
               <td width="70px">
               {% if user.active == 1 %}
                 {% if user.admin == 0 %}

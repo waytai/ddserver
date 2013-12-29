@@ -19,7 +19,6 @@
         
           {% if suffixes %}
           
-          {% if hosts.count < config.dns.max_hosts %}
             <p class="j">
               Use the from to specify your hostnames. You can add up to 
               {{config.dns.max_hosts}} hostnames with a maximum length of 
@@ -154,15 +153,6 @@
             </form>
           </div>
           
-          
-        {% else%}
-        {# MAX HOSTS DEFINED #}
-          <p class="j text-error">
-            You already have the maximum possible number of hostnames defined. 
-          </p>
-        {% endif %}
-        
-        
         {% else %}
         {# NO SUFFIXES DEFINED YET #}
           <p class="j text-error">
